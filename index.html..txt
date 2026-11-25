@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pour ma princesse</title>
+<style>
+:root{--bg:#fff4f1;--card:#ffffff;--ink:#2b1d22;--muted:#7a6068;--accent:#d6336c;--accent2:#ffe3ec;--bad:#c92a2a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1216;--card:#2a1b21;--ink:#fbeef2;--muted:#c3a5af;--accent:#ff7aa2;--accent2:#3a2430;--bad:#ff8787}}
+:root[data-theme="dark"]{--bg:#1c1216;--card:#2a1b21;--ink:#fbeef2;--muted:#c3a5af;--accent:#ff7aa2;--accent2:#3a2430;--bad:#ff8787}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.65;min-height:100vh;display:flex;justify-content:center;padding:20px 16px}
+main{width:100%;max-width:480px}
+.card{background:var(--card);border-radius:22px;padding:26px 22px;box-shadow:0 8px 28px rgba(214,51,108,.14);margin-top:14px}
+h1{font-size:1.6rem;margin:0 0 8px;color:var(--accent);text-align:center}
+p{margin:0 0 14px}
+.muted{color:var(--muted);font-size:.92rem}
+.center{text-align:center}
+.icon{text-align:center;font-size:2.4rem;margin-bottom:6px}
+input{width:100%;font:inherit;font-size:1.1rem;padding:13px 14px;border-radius:12px;border:2px solid var(--accent2);background:var(--bg);color:var(--ink);margin:8px 0;text-align:center}
+input:focus{outline:none;border-color:var(--accent)}
+button,a.btn{display:block;width:100%;text-align:center;text-decoration:none;font:inherit;cursor:pointer;border:0;border-radius:12px;padding:13px 18px;background:var(--accent);color:#fff;font-size:1.02rem}
+.tabs{display:flex;gap:8px}
+.tabs button{background:var(--accent2);color:var(--accent);padding:11px 8px}
+.tabs button.on{background:var(--accent);color:#fff}
+.fb{min-height:1.4em;margin-top:6px;font-size:.95rem;color:var(--bad);text-align:center}
+.shake{animation:sh .35s}
+@keyframes sh{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.hide{display:none}
+.letter p{font-size:1.04rem}
+.sig{text-align:right;font-style:italic;color:var(--accent);font-size:1.15rem;margin-top:8px}
+.song{text-align:center}
+.song .title{font-size:1.35rem;color:var(--accent);margin:4px 0}
+</style>
+</head>
+<body>
+<main>
+
+  <div class="card" id="lock">
+    <div class="icon">🔐</div>
+    <h1>Pour ma princesse</h1>
+    <p class="center muted">Cette page est réservée à une seule personne au monde. Entre le mot de passe pour l’ouvrir.</p>
+    <input id="pw" type="password" autocomplete="off" autocapitalize="off" placeholder="Mot de passe">
+    <button id="go">Ouvrir 💞</button>
+    <div class="fb" id="fb"></div>
+  </div>
+
+  <div class="hide" id="inside">
+    <div class="card">
+      <div class="tabs">
+        <button id="t1" class="on">💌 Ma lettre</button>
+        <button id="t2">🎵 Notre chanson</button>
+      </div>
+    </div>
+
+    <div class="card letter" id="letter">
+      <h1>Ma princesse Persead</h1>
+      <p>Il y a des choses que je sais démontrer, et d’autres que je sais seulement ressentir. Toi, tu fais partie des secondes.</p>
+      <p>Depuis que tu es dans ma vie, tout est plus doux : les matins, les longues journées, même les cours les plus interminables. Ton sourire a quelque chose de magique, il met de l’ordre dans mon monde.</p>
+      <p>Merci d’être celle que tu es, pour ta lumière, ta patience, et cette façon que tu as de me faire croire que tout est possible. Je ne te le dis peut-être pas assez, alors lis bien ceci : je t’aime. Sincèrement, profondément, un peu plus chaque jour.</p>
+      <p>Va en cours la tête haute, ma princesse, tu es brillante. Et quand la journée te paraîtra longue, rappelle-toi que quelque part, un cœur bat pour toi, fier de la femme que tu es et heureux de t’avoir choisie.</p>
+      <p>Tu es mon plus beau hasard devenu mon plus beau choix.</p>
+      <div class="sig">Je t’aime, Persead.<br>À toi, aujourd’hui et pour toujours,<br>Benoît ❤️</div>
+    </div>
+
+    <div class="card song hide" id="song">
+      <div class="icon">🎶</div>
+      <p class="muted">Ce que je voudrais te dire en musique</p>
+      <div class="title">Reine</div>
+      <p><strong>Dadju</strong></p>
+      <p>Mets tes écouteurs, ferme les yeux une minute, et pense à nous.</p>
+      <a class="btn" id="play" href="https://www.youtube.com/results?search_query=Dadju+Reine" target="_blank" rel="noopener">▶ Écouter la chanson</a>
+    </div>
+  </div>
+
+</main>
+<script>
+// Mot de passe (majuscules et espaces ignorés)
+var PASSWORD = "B2P_Forever";
+
+function $(id){return document.getElementById(id)}
+function norm(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g,"")}
+function tryOpen(){
+  if(norm($("pw").value)===norm(PASSWORD)){
+    $("lock").classList.add("hide");$("inside").classList.remove("hide");window.scrollTo(0,0);
+  }else{
+    $("fb").textContent="Ce n’est pas le bon mot de passe, réessaie ma princesse.";
+    var c=$("lock");c.classList.remove("shake");void c.offsetWidth;c.classList.add("shake");
+  }
+}
+function tab(n){
+  $("letter").classList.toggle("hide",n!==1);$("song").classList.toggle("hide",n!==2);
+  $("t1").classList.toggle("on",n===1);$("t2").classList.toggle("on",n===2);
+}
+$("go").onclick=tryOpen;
+$("pw").addEventListener("keydown",function(e){if(e.key==="Enter"){tryOpen()}});
+$("t1").onclick=function(){tab(1)};
+$("t2").onclick=function(){tab(2)};
+</script>
+</body>
+</html>
